@@ -7,10 +7,6 @@
     "start": "node server/index.js",
     "dev": "nodemon server/index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lazurcavali/vue-f2.git"
-  },
   "author": "Valentin Lazurca",
   "license": "ISC",
   "bugs": {
