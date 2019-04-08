@@ -14,19 +14,26 @@ router.post('/', async (req, res) => {
     const posts = await loadPostsCollection();
     await posts.insertOne({
         text: req.body.text,
-        isChecked: req.body.isChecked
+        isChecked: false
     });
     res.status(200).send();
 });
 
 // UPDATE posts
-// router.put('/:id', async (req, res) => {
-//     const posts = await loadPostsCollection();
-//     await posts.updateOne({
-//         isChecked: req.body.isChecked
-//     });
-//     res.status(200).send(res);
-// });
+router.put('/:id', async (req, res) => {
+    const id = req.params.id;
+    const posts = await loadPostsCollection();
+    await posts.updateOne({
+        _id: new mongodb.ObjectID(id)
+    }, {
+        "$set": {
+            isChecked: req.body.isChecked
+        }
+    },
+    { new: true }, (error, result) => {
+    res.status(200).send();
+    });
+});
 
 // DELETE posts
 router.delete('/:id', async (req, res) => {
@@ -37,7 +44,8 @@ router.delete('/:id', async (req, res) => {
 
 
 async function loadPostsCollection() {
-    const client = await mongodb.MongoClient.connect('mongodb+srv://vali123:vali123@vueproject-sfur0.mongodb.net/test?retryWrites=true', {
+    const client = await mongodb.MongoClient.connect(
+        'mongodb+srv://vali123:vali123@vueproject-sfur0.mongodb.net/test?retryWrites=true', {
         useNewUrlParser : true
     });
 
