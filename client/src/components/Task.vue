@@ -1,7 +1,9 @@
 <template>
-    <li>
-        <p class="text">{{ post.text }}</p>
-        <label for="done">Mark as checked</label>
+    <li v-bind:class="{ active: post.isChecked }">
+        <EditTaskText 
+          :post="post"
+        />
+        <label for="done"></label>
         <label class="myCheckbox">
             <input 
                 v-model="post.isChecked"
@@ -9,15 +11,16 @@
                 type="checkbox"
                 name="done"
                 >
-            <span></span>
+            <span>Mark as checked</span>
         </label>
-        <button v-on:click="deletePost(post._id)" class="delete">Delete</button>
+        <button v-on:click="deletePost(post._id)" class="delete">X</button>
     </li>
 </template>
 
 <script>
 import PostService from '../PostService'
 import { EventBus } from '../main'
+import EditTaskText from './EditTaskText'
 
 export default {
   name: 'Task',
@@ -29,36 +32,52 @@ export default {
           EventBus.$emit('taskWasDeleted', id);
       },
       updatePost(post) {
+          post.isChecked = !post.isChecked;
           this.$emit('taskWasUpdated', post);
       }
+  },
+  components: {
+    EditTaskText
   }
 }
 </script>
 
 <style scoped>
-  p.error {
-    border: 1px solid red;
-    background-color: #ffccf6;
-    padding: 10px;
-    margin-bottom: 15px;
+  li {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border: 1px solid #f2f2f2;
+    background-color: #f2f2f2;
+    color: #333;
+    transition: 0.2s;
+    box-shadow: 0px 7px 16px -5px rgba(0,0,0,0.75);
   }
 
-  .post {
-    position: relative;
-    border: 1px solid green;
-    background-color: white;
-    padding: 0 10px 20px;
-    margin-bottom: 15px;
+  .delete {
+    border: none;
+    background: none;
+    color: red;
+    font-size: 15px;
+    cursor: pointer;
+  }
+
+  .myCheckbox input {
+    display: none;
+  }
+
+  .myCheckbox span {
+    cursor: pointer;
+    font-size: 14px;
   }
 
   .active {
-    background-color: green;
-    color: yellowgreen;
-  }
-
-  p.text {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 0;
+    border: 1px solid #00b359;
+    background-color: #00b359;
+    color: white;
+    text-decoration: line-through;
+    transition: 0.2s;
+    box-shadow: 0px 7px 16px -10px rgba(0,0,0,0.75);
+    transform: translateY(2px);
   }
 </style>

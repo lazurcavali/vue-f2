@@ -33,8 +33,11 @@ class PostService {
     }
 
     // UPDATE posts
-    static updatePost(id, isChecked) {
-        return axios.put(`${url}${id}`, {isChecked: isChecked});
+    static updatePost(id, isChecked, text) {
+        return axios.put(`${url}${id}`, {
+            isChecked: isChecked,
+            text: text
+        });
     }
 }
 

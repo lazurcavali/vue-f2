@@ -25,13 +25,18 @@ router.put('/:id', async (req, res) => {
     const posts = await loadPostsCollection();
     await posts.updateOne({
         _id: new mongodb.ObjectID(id)
-    }, {
+    }, 
+    {
         "$set": {
-            isChecked: req.body.isChecked
+            isChecked: req.body.isChecked,
+            text: req.body.text
         }
     },
-    { new: true }, (error, result) => {
-    res.status(200).send();
+    { 
+        new: true 
+    }, 
+    (error, result) => {
+        res.status(200).send();
     });
 });
 
