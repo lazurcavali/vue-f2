@@ -17,12 +17,14 @@
       </div>
       
       <ul>
-      <Task 
-        v-for="post in filteredTasks"
-        v-bind:key="post._id"
-        :post="post"
-        @taskWasUpdated="updatePost(post)"
-      />
+        <transition-group name="slide" mode="out-in">
+          <Task 
+            v-for="post in filteredTasks"
+            v-bind:key="post._id"
+            :post="post"
+            @taskWasUpdated="updatePost(post)"
+          />
+        </transition-group>
     </ul>
     </div>
   </div>
@@ -135,5 +137,43 @@ export default {
   ul {
     list-style: none;
     padding: 0;
+  }
+
+  .slide-enter {
+    opacity: 0;
+  }
+
+  .slide-enter-active {
+    animation: slide-in 1s ease-out forwards;
+    transition: opacity .5s;
+  }
+
+  .slide-leave {
+
+  }
+
+  .slide-leave-active {
+    animation: slide-out 1s ease-out forwards;
+    transition: opacity 1s;
+    opacity: 0;
+    display: none;
+  }
+
+  @keyframes slide-in {
+    from {
+      transform: translateX(-30px);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-out  {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(30px);
+    }
   }
 </style>
